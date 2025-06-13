@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Error</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1A252F, #2D3748);
+      min-height: 100vh;
+      color: #1A252F;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      width: 90%;
+      background: #FFFFFF;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1A252F;
+      margin-bottom: 20px;
+    }
+    .message {
+      color: #FF4D4F;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    a {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #1E90FF;
+      color: #FFFFFF;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background 0.2s, transform 0.1s;
+    }
+    a:hover {
+      background: #0072D6;
+      transform: translateY(-2px);
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 16px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Error</h1>
+    <p class="message"><%= message %></p>
+    <a href="/">Go Home</a>
+  </div>
+</body>
+</html>

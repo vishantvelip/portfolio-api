@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= project._id ? 'Edit' : 'Add' %> Project</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1A252F, #2D3748);
+      min-height: 100vh;
+      color: #1A252F;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      width: 90%;
+      background: #FFFFFF;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+    }
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #1A252F;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .message {
+      color: #FF4D4F;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      display: block;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="text"]:focus, textarea:focus {
+      border-color: #1E90FF;
+      box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.1);
+      outline: none;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    input[type="file"] {
+      padding: 8px;
+    }
+    img {
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+    .form-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    button, a.button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+    }
+    button {
+      background: #1E90FF;
+      color: #FFFFFF;
+    }
+    button:hover {
+      background: #0072D6;
+      transform: translateY(-2px);
+    }
+    a.button {
+      background: #6B7280;
+      color: #FFFFFF;
+    }
+    a.button:hover {
+      background: #4B5563;
+      transform: translateY(-2px);
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 16px;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2><%= project._id ? 'Edit' : 'Add' %> Project</h2>
+    <% if (message) { %>
+      <p class="message"><%= message %></p>
+    <% } %>
+    <form action="<%= project._id ? ('/api/projects/update/' + project._id) : '/api/projects/create' %>" method="POST" enctype="multipart/form-data">
+      <label>Name:<br><input type="text" name="name" value="<%= project.name || '' %>"/></label>
+      <label>Title:<br><input type="text" name="title" value="<%= project.title || '' %>"/></label>
+      <label>Description:<br><textarea name="description"><%= project.description || '' %></textarea></label>
+      <label>Image:<br><input type="file" name="projectImg"/></label>
+      <% if (project.projectImg) { %>
+        <img src="/<%= project.projectImg %>" width="100" alt="Project Image"/>
+      <% } %>
+      <div class="form-buttons">
+        <button type="submit">Submit</button>
+        <a href="/api/projects/view" class="button">Cancel</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
