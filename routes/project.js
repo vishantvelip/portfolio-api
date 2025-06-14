@@ -24,7 +24,7 @@ router.get("/view", async (req, res) => {
   } catch (error) {
     res.status(500).render("view-project", {
       projects: [],
-      message: error.message,
+      message: `Error loading projects: ${error.message}`,
       searchQuery: "",
     });
   }
@@ -34,8 +34,7 @@ router.get("/view", async (req, res) => {
 router.get("/json", async (req, res) => {
   try {
     const projects = await Project.find();
-    // Add base URL to projectImg for frontend consumption
-    const projectsWithFullImagePath = projects.map(project => ({
+    const projectsWithFullImagePath = projects.map((project) => ({
       ...project.toObject(),
       projectImg: project.projectImg
         ? `https://portfolio-api-epzm.onrender.com/${project.projectImg}`
@@ -54,24 +53,31 @@ router.get("/create", (req, res) => {
 
 router.post("/create", upload.single("projectImg"), async (req, res) => {
   try {
-    const { name, title, description, projectsUrl } = req.body;
-    if (!name || !title || !description || !projectsUrl) {
+    const { name, title, description, projectsUrl, projectCodeViewurl } = req.body;
+    if (!name || !title || !description || !projectsUrl || !projectCodeViewurl) {
       return res.status(400).render("edit-project", {
         project: req.body,
-        message: "All fields are required, including Project URL",
+        message: "All fields are required, including Project URL and Code View URL",
       });
     }
     let projectImg = "";
     if (req.file) {
       projectImg = `uploads/${req.file.filename}`;
     }
-    const newProject = new Project({ name, title, description, projectImg, projectsUrl });
+    const newProject = new Project({
+      name,
+      title,
+      description,
+      projectImg,
+      projectsUrl,
+      projectCodeViewurl,
+    });
     await newProject.save();
     res.redirect("/api/projects/view");
   } catch (error) {
     res.status(500).render("edit-project", {
       project: req.body,
-      message: error.message || "Failed to create project",
+      message: `Failed to create project: ${error.message}`,
     });
   }
 });
@@ -91,7 +97,7 @@ router.get("/edit/:id", async (req, res) => {
   } catch (error) {
     res.status(500).render("view-project", {
       projects: await Project.find(),
-      message: error.message,
+      message: `Error loading project: ${error.message}`,
       searchQuery: "",
     });
   }
@@ -100,7 +106,7 @@ router.get("/edit/:id", async (req, res) => {
 // Update a project
 router.post("/update/:id", upload.single("projectImg"), async (req, res) => {
   try {
-    const { name, title, description, projectsUrl } = req.body;
+    const { name, title, description, projectsUrl, projectCodeViewurl } = req.body;
     let project = await Project.findById(req.params.id);
     if (!project) {
       return res.status(404).render("view-project", {
@@ -109,10 +115,10 @@ router.post("/update/:id", upload.single("projectImg"), async (req, res) => {
         searchQuery: "",
       });
     }
-    if (!name || !title || !description || !projectsUrl) {
+    if (!name || !title || !description || !projectsUrl || !projectCodeViewurl) {
       return res.status(400).render("edit-project", {
         project,
-        message: "All fields are required, including Project URL",
+        message: "All fields are required, including Project URL and Code View URL",
       });
     }
     let projectImg = project.projectImg;
@@ -132,12 +138,13 @@ router.post("/update/:id", upload.single("projectImg"), async (req, res) => {
       description,
       projectImg,
       projectsUrl,
+      projectCodeViewurl,
     });
     res.redirect("/api/projects/view");
   } catch (error) {
     res.status(500).render("edit-project", {
       project: await Project.findById(req.params.id),
-      message: error.message || "Failed to update project",
+      message: `Failed to update project: ${error.message}`,
     });
   }
 });
@@ -165,7 +172,7 @@ router.post("/delete/:id", async (req, res) => {
   } catch (error) {
     res.status(500).render("view-project", {
       projects: await Project.find(),
-      message: "Failed to delete project",
+      message: `Failed to delete project: ${error.message}`,
       searchQuery: "",
     });
   }
