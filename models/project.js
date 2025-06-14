@@ -5,7 +5,8 @@ const projectSchema = new Schema(
     name: { type: String, required: true, trim: true },
     title: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true },
-    projectImg: { type: String, default: "" }
+    projectImg: { type: String, default: "" },
+    projectsUrl: { type: String, required: true, trim: true } // Moved inside the schema
   },
   { timestamps: true }
 );
