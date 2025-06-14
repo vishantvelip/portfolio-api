@@ -148,6 +148,7 @@
         <th>Title</th>
         <th>Description</th>
         <th>Project URL</th>
+        <th>Code View URL</th>
         <th>Image</th>
         <th>Actions</th>
       </tr>
@@ -159,6 +160,11 @@
           <td>
             <a href="<%= project.projectsUrl %>" target="_blank">
               <%= project.projectsUrl %>
+            </a>
+          </td>
+          <td>
+            <a href="<%= project.projectCodeViewurl %>" target="_blank">
+              <%= project.projectCodeViewurl %>
             </a>
           </td>
           <td>
