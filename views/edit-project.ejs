@@ -123,6 +123,7 @@
       <label>Title:<br><input type="text" name="title" value="<%= project.title || '' %>" required/></label>
       <label>Description:<br><textarea name="description" required><%= project.description || '' %></textarea></label>
       <label>Project URL:<br><input type="url" name="projectsUrl" value="<%= project.projectsUrl || '' %>" required/></label>
+      <label>Code View URL:<br><input type="url" name="projectCodeViewurl" value="<%= project.projectCodeViewurl || '' %>" required/></label>
       <label>Image:<br><input type="file" name="projectImg" accept="image/*"/></label>
       <% if (project.projectImg) { %>
         <img src="https://portfolio-api-epzm.onrender.com/<%= project.projectImg %>" alt="Project Image" onerror="this.src='https://via.placeholder.com/100';"/>
