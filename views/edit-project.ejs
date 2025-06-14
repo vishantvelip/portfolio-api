@@ -122,12 +122,13 @@
       <p class="message"><%= message %></p>
     <% } %>
     <form action="<%= project._id ? ('/api/projects/update/' + project._id) : '/api/projects/create' %>" method="POST" enctype="multipart/form-data">
-      <label>Name:<br><input type="text" name="name" value="<%= project.name || '' %>"/></label>
-      <label>Title:<br><input type="text" name="title" value="<%= project.title || '' %>"/></label>
-      <label>Description:<br><textarea name="description"><%= project.description || '' %></textarea></label>
-      <label>Image:<br><input type="file" name="projectImg"/></label>
+      <label>Name:<br><input type="text" name="name" value="<%= project.name || '' %>" required/></label>
+      <label>Title:<br><input type="text" name="title" value="<%= project.title || '' %>" required/></label>
+      <label>Description:<br><textarea name="description" required><%= project.description || '' %></textarea></label>
+      <label>Project URL:<br><input type="url" name="projectsUrl" value="<%= project.projectsUrl || '' %>" required/></label>
+      <label>Image:<br><input type="file" name="projectImg" accept="image/*"/></label>
       <% if (project.projectImg) { %>
-        <img src="/<%= project.projectImg %>" width="100" alt="Project Image"/>
+        <img src="https://portfolio-api-epzm.onrender.com/<%= project.projectImg %>" width="100" alt="Project Image" onerror="this.src='https://via.placeholder.com/100';"/>
       <% } %>
       <div class="form-buttons">
         <button type="submit">Submit</button>
