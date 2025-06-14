@@ -121,25 +121,21 @@ router.post("/update/:id", upload.single("projectImg"), async (req, res) => {
         message: "All fields are required, including Project URL and Code View URL",
       });
     }
-    let projectImg = project.projectImg;
-    if (req.file) {
-      if (projectImg) {
-        try {
-          await fs.unlink(path.join(__dirname, "../public", projectImg));
-        } catch (err) {
-          console.error("Error deleting old image:", err);
-        }
-      }
-      projectImg = `uploads/${req.file.filename}`;
-    }
-    await Project.findByIdAndUpdate(req.params.id, {
+
+    // Only update projectImg if a new file is uploaded
+    let updateData = {
       name,
       title,
       description,
-      projectImg,
       projectsUrl,
       projectCodeViewurl,
-    });
+    };
+    if (req.file) {
+      updateData.projectImg = `uploads/${req.file.filename}`;
+      // DO NOT delete the old image file - keep it on disk
+    }
+
+    await Project.findByIdAndUpdate(req.params.id, updateData);
     res.redirect("/api/projects/view");
   } catch (error) {
     res.status(500).render("edit-project", {
@@ -160,13 +156,7 @@ router.post("/delete/:id", async (req, res) => {
         searchQuery: "",
       });
     }
-    if (project.projectImg) {
-      try {
-        await fs.unlink(path.join(__dirname, "../public", project.projectImg));
-      } catch (err) {
-        console.error("Error deleting image:", err);
-      }
-    }
+    // DO NOT delete the image file - keep it on disk
     await Project.findByIdAndDelete(req.params.id);
     res.redirect("/api/projects/view");
   } catch (error) {
